@@ -13,6 +13,7 @@
 
 ### Trigger by scripting
 
+### Trigger by bashshell commandline.
 ```sh
 curl \
   -X POST \
@@ -23,6 +24,16 @@ curl \
   -d '{"ref":"main","inputs":{"is_start":"true"}}'
 ```
 
+### Trigger by python code
+* Install dependencies
+
+```
+pip3 install requests
+
+```
+
+* Python code
+python3 script_name.py
 
 ```python
 import json
@@ -61,6 +72,9 @@ if __name__ == '__main__':
     lambda_handler()
 ```
 
+## Result
+* You can trigger by tags or run the job manually with some parameters.
+![](./images/trigger-jobs.png)
 
 ## References
 * [How to create a token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
