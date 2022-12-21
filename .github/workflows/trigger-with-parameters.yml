@@ -1,0 +1,63 @@
+name: trigger-with-parameters
+on:
+  workflow_dispatch:
+    inputs:
+      is_start:
+        description: 'is_start'
+        required: false
+        default: ''
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.is_start == 'true' }}
+
+    environment:
+      name: lamhaison-demo
+
+    env:
+      application: lamhaison-demo
+      application_env: prod
+      verbose_env: production
+      # It is the information for pushing objects to S3 bucket.
+      # Please set secret for AWS_S3_BUCKET, AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY before intergrating with AWS
+      aws_region: ap-southeast-1
+      # Seting this info to send file to s3.
+      aws_assume_role: ""
+      s3_object_name: ""
+
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: creating zip file
+      run: |
+        zip -r ${{ env.application }}.zip *
+        mkdir -p push_object_to_s3
+        mv ${{env.application}}.zip push_object_to_s3/${{env.application}}.zip
+        echo "Status: $?"
+
+
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: ${{ env.aws_region }}
+    #     role-to-assume: ${{ env.aws_assume_role }}
+    #     role-session-name: ${{ env.aws_assume_role }}
+    #     role-duration-seconds: 3600
+    #     role-skip-session-tagging : true
+
+
+
+     # - name: Upload file to bucket
+     #   uses: zdurham/s3-upload-github-action@master
+     #   env:
+     #    FILE: ./push_object_to_s3/${{ env.application }}.zip
+     #    AWS_REGION: ${{ env.aws_region }}
+     #    S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+     #    S3_KEY: ${{ env.application }}
+     #    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+     #    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
