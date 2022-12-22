@@ -5,7 +5,7 @@
 * Trigger by parameters: when you want to run the script with some parameters, you can use this script to run
 
 ### Granting permissions
-* Acecss the site - https://github.com/settings/tokens
+* Access the site - https://github.com/settings/tokens
 * To create classic token (Generate new token (classic) For general use)
 * Granting repo, workflow permissions
 ![alt text](./images/trigger-a-github-action-job-permissions.png)
